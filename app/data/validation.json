@@ -1,0 +1,586 @@
+{
+ "inputs": [
+  "config.json",
+  "thermal.json",
+  "terrain.json",
+  "sources.json",
+  "score.py"
+ ],
+ "rules": {
+  "near_top_rank": 2,
+  "sensitivity_factors": [
+   0.8,
+   1.2
+  ],
+  "ranking": "rank 1 = smallest gap to the reference (as in cards.json)",
+  "note": "results as computed; no parameter was tuned"
+ },
+ "tau": {
+  "moon/thermal_swing_K": 300,
+  "moon/slope_deg": 5.6,
+  "moon/roughness_m": 0.36,
+  "moon/mean_temperature_K": null,
+  "mars/thermal_swing_K": null,
+  "mars/slope_deg": null,
+  "mars/roughness_m": null,
+  "mars/mean_temperature_K": 23.92
+ },
+ "benchmarks": [
+  {
+   "site": "atacama",
+   "named_as": "Mars analog",
+   "sources": [
+    {
+     "id": "nasa_planetary_analogs",
+     "url": "https://science.nasa.gov/solar-system/planetary-analogs/10-things-to-know-about-planetary-analogs/",
+     "quote": "studying extremely dry places like Chile's Atacama Desert helps scientists understand the conditions on Mars."
+    },
+    {
+     "id": "nasa_arads",
+     "url": "https://www.nasa.gov/universe/atacama-rover-astrobiology-drilling-studies-arads/",
+     "quote": "testing them in one of the most Mars-like places on Earth: Chile's Atacama Desert."
+    }
+   ],
+   "ranks": {
+    "moon/thermal_swing_K": {
+     "rank": 2,
+     "of": 5,
+     "earth": 22.24,
+     "ref": 300,
+     "gap": 277.76,
+     "score": 0.07,
+     "label": "weak"
+    },
+    "mars/mean_temperature_K": {
+     "rank": 5,
+     "of": 5,
+     "earth": 297.32,
+     "ref": 214,
+     "gap": 83.32,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "moon/slope_deg": {
+     "rank": 2,
+     "of": 3,
+     "earth": 5.37,
+     "ref": 17.81,
+     "gap": 12.44,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "moon/roughness_m": {
+     "rank": 2,
+     "of": 3,
+     "earth": 0.71,
+     "ref": 0.36,
+     "gap": 0.35,
+     "score": 0.03,
+     "label": "weak"
+    }
+   },
+   "findings": [
+    {
+     "comparison": "mars/mean_temperature_K",
+     "near_top": false,
+     "text": "mean temperature vs Mars: rank 5 of 5; atacama 297.32 K vs 214 K, gap 83.32 K, weak (0.00). Not near the top: the closest site, dryvalleys, has 242.37 K (gap 28.37 K). atacama has the largest gap of all 5 sites on this metric."
+    }
+   ],
+   "not_measured": "The source names atacama for extreme dryness and soil chemistry, which no number in this atlas measures."
+  },
+  {
+   "site": "haughton",
+   "named_as": "Mars analog",
+   "sources": [
+    {
+     "id": "nasa_planetary_analogs",
+     "url": "https://science.nasa.gov/solar-system/planetary-analogs/10-things-to-know-about-planetary-analogs/",
+     "quote": "The Haughton Mars Project (HMP) is a mission analog located at the Haughton meteorite impact crater on the world's largest uninhabited island, Devon Island, Canada. ... Mars is covered in craters, so Haughton Crater is a good place to practice Martian extravehicular activities (EVAs)."
+    }
+   ],
+   "ranks": {
+    "moon/thermal_swing_K": {
+     "rank": 4,
+     "of": 5,
+     "earth": 2.06,
+     "ref": 300,
+     "gap": 297.94,
+     "score": 0.01,
+     "label": "weak"
+    },
+    "mars/mean_temperature_K": {
+     "rank": 2,
+     "of": 5,
+     "earth": 251.14,
+     "ref": 214,
+     "gap": 37.14,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "moon/slope_deg": {
+     "rank": null,
+     "of": null,
+     "earth": null,
+     "ref": 17.81,
+     "gap": null,
+     "score": null,
+     "label": "not assessed"
+    },
+    "moon/roughness_m": {
+     "rank": null,
+     "of": null,
+     "earth": null,
+     "ref": 0.36,
+     "gap": null,
+     "score": null,
+     "label": "not assessed"
+    }
+   },
+   "findings": [
+    {
+     "comparison": "mars/mean_temperature_K",
+     "near_top": true,
+     "text": "mean temperature vs Mars: rank 2 of 5; haughton 251.14 K vs 214 K, gap 37.14 K, weak (0.00). Near the top, but still a weak match."
+    }
+   ],
+   "not_measured": "The source names haughton for impact-crater terrain for Martian EVAs, which no number in this atlas measures."
+  },
+  {
+   "site": "dryvalleys",
+   "named_as": "Mars analog",
+   "sources": [
+    {
+     "id": "ntrs_20100003844",
+     "url": "https://ntrs.nasa.gov/citations/20100003844",
+     "quote": "The best known Earth analog to the Martian high-northern plains, where Phoenix landed, are the McMurdo Dry Valleys (MDV), Antarctica"
+    }
+   ],
+   "ranks": {
+    "moon/thermal_swing_K": {
+     "rank": 5,
+     "of": 5,
+     "earth": 0.86,
+     "ref": 300,
+     "gap": 299.14,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "mars/mean_temperature_K": {
+     "rank": 1,
+     "of": 5,
+     "earth": 242.37,
+     "ref": 214,
+     "gap": 28.37,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "moon/slope_deg": {
+     "rank": null,
+     "of": null,
+     "earth": null,
+     "ref": 17.81,
+     "gap": null,
+     "score": null,
+     "label": "not assessed"
+    },
+    "moon/roughness_m": {
+     "rank": null,
+     "of": null,
+     "earth": null,
+     "ref": 0.36,
+     "gap": null,
+     "score": null,
+     "label": "not assessed"
+    }
+   },
+   "findings": [
+    {
+     "comparison": "mars/mean_temperature_K",
+     "near_top": true,
+     "text": "mean temperature vs Mars: rank 1 of 5; dryvalleys 242.37 K vs 214 K, gap 28.37 K, weak (0.00). Near the top, but still a weak match."
+    }
+   ],
+   "not_measured": "The source names dryvalleys for ground ice like the Phoenix landing plains, which no number in this atlas measures."
+  },
+  {
+   "site": "maunakea",
+   "named_as": "lunar analog",
+   "sources": [
+    {
+     "id": "ntrs_20110008363",
+     "url": "https://ntrs.nasa.gov/citations/20110008363",
+     "quote": "we provide a description and regional geological setting for a new field analogue test site for lunar resource exploration"
+    }
+   ],
+   "ranks": {
+    "moon/thermal_swing_K": {
+     "rank": 1,
+     "of": 5,
+     "earth": 23.58,
+     "ref": 300,
+     "gap": 276.42,
+     "score": 0.08,
+     "label": "weak"
+    },
+    "mars/mean_temperature_K": {
+     "rank": 4,
+     "of": 5,
+     "earth": 287.37,
+     "ref": 214,
+     "gap": 73.37,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "moon/slope_deg": {
+     "rank": 1,
+     "of": 3,
+     "earth": 13.94,
+     "ref": 17.81,
+     "gap": 3.87,
+     "score": 0.31,
+     "label": "weak"
+    },
+    "moon/roughness_m": {
+     "rank": 3,
+     "of": 3,
+     "earth": 0.81,
+     "ref": 0.36,
+     "gap": 0.45,
+     "score": 0.0,
+     "label": "weak"
+    }
+   },
+   "findings": [
+    {
+     "comparison": "moon/thermal_swing_K",
+     "near_top": true,
+     "text": "day-night temperature swing vs Moon: rank 1 of 5; maunakea 23.58 K vs 300 K, gap 276.42 K, weak (0.08). Near the top, but still a weak match."
+    },
+    {
+     "comparison": "moon/slope_deg",
+     "near_top": true,
+     "text": "median slope vs Moon: rank 1 of 3; maunakea 13.94 ° vs 17.81 °, gap 3.87 °, weak (0.31). Near the top, but still a weak match."
+    },
+    {
+     "comparison": "moon/roughness_m",
+     "near_top": false,
+     "text": "median roughness vs Moon: rank 3 of 3; maunakea 0.81 m vs 0.36 m, gap 0.45 m, weak (0.00). Not near the top: the closest site, altiplano, has 0.71 m (gap 0.35 m). maunakea has the largest gap of all 3 sites on this metric."
+    }
+   ],
+   "not_measured": "The source names maunakea for lunar resource (ISRU) field testing, which no number in this atlas measures."
+  }
+ ],
+ "control": {
+  "status": "pending: control request not finished",
+  "files_checked": [
+   "atlas-thermal-MOD11A2-061-results.csv"
+  ]
+ },
+ "single_metric": {
+  "pair": [
+   "maunakea",
+   "atacama"
+  ],
+  "per_metric": {
+   "moon/thermal_swing_K": {
+    "maunakea": {
+     "rank": 1,
+     "of": 5,
+     "earth": 23.58,
+     "ref": 300,
+     "gap": 276.42,
+     "score": 0.08,
+     "label": "weak"
+    },
+    "atacama": {
+     "rank": 2,
+     "of": 5,
+     "earth": 22.24,
+     "ref": 300,
+     "gap": 277.76,
+     "score": 0.07,
+     "label": "weak"
+    },
+    "difference": 1.34,
+    "closer": "maunakea"
+   },
+   "mars/mean_temperature_K": {
+    "maunakea": {
+     "rank": 4,
+     "of": 5,
+     "earth": 287.37,
+     "ref": 214,
+     "gap": 73.37,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "atacama": {
+     "rank": 5,
+     "of": 5,
+     "earth": 297.32,
+     "ref": 214,
+     "gap": 83.32,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "difference": 9.95,
+    "closer": "maunakea"
+   },
+   "moon/slope_deg": {
+    "maunakea": {
+     "rank": 1,
+     "of": 3,
+     "earth": 13.94,
+     "ref": 17.81,
+     "gap": 3.87,
+     "score": 0.31,
+     "label": "weak"
+    },
+    "atacama": {
+     "rank": 2,
+     "of": 3,
+     "earth": 5.37,
+     "ref": 17.81,
+     "gap": 12.44,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "difference": 8.57,
+    "closer": "maunakea"
+   },
+   "moon/roughness_m": {
+    "maunakea": {
+     "rank": 3,
+     "of": 3,
+     "earth": 0.81,
+     "ref": 0.36,
+     "gap": 0.45,
+     "score": 0.0,
+     "label": "weak"
+    },
+    "atacama": {
+     "rank": 2,
+     "of": 3,
+     "earth": 0.71,
+     "ref": 0.36,
+     "gap": 0.35,
+     "score": 0.03,
+     "label": "weak"
+    },
+    "difference": 0.1,
+    "closer": "atacama"
+   }
+  },
+  "closer_count": {
+   "maunakea": 3,
+   "atacama": 1
+  },
+  "ties": [
+   {
+    "comparison": "moon/roughness_m",
+    "value": 0.71,
+    "sites": [
+     "altiplano",
+     "atacama"
+    ]
+   }
+  ],
+  "lines": [
+   "day-night temperature swing vs Moon: maunakea 23.58 K (rank 1 of 5), atacama 22.24 K (rank 2 of 5); 1.34 K apart; closer: maunakea.",
+   "mean temperature vs Mars: maunakea 287.37 K (rank 4 of 5), atacama 297.32 K (rank 5 of 5); 9.95 K apart; closer: maunakea.",
+   "median slope vs Moon: maunakea 13.94 ° (rank 1 of 3), atacama 5.37 ° (rank 2 of 3); 8.57 ° apart; closer: maunakea.",
+   "median roughness vs Moon: maunakea 0.81 m (rank 3 of 3), atacama 0.71 m (rank 2 of 3); 0.1 m apart; closer: atacama.",
+   "maunakea is closer on 3 of 4 metrics and atacama on 1.",
+   "maunakea ranks 1 of 3 on slope but 3 of 3 on roughness, so one terrain metric alone does not show a terrain match.",
+   "altiplano and atacama have the same median roughness (0.71 m), so that metric alone cannot tell them apart."
+  ]
+ },
+ "sensitivity": {
+  "factors": [
+   0.8,
+   1.2
+  ],
+  "labels_now": {
+   "weak": 16
+  },
+  "runs": [
+   {
+    "factor": 0.8,
+    "label_changes": 0,
+    "labels_compared": 16,
+    "changed": [],
+    "max_score_change": 0.17,
+    "rankings": {
+     "moon/thermal_swing_K": {
+      "sites": 5,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 4,
+      "zero_scores_before": 0,
+      "zero_scores_after": 5,
+      "score_ranks_before": {
+       "altiplano": 3,
+       "atacama": 2,
+       "dryvalleys": 5,
+       "haughton": 4,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 1,
+       "atacama": 1,
+       "dryvalleys": 1,
+       "haughton": 1,
+       "maunakea": 1
+      }
+     },
+     "mars/mean_temperature_K": {
+      "sites": 5,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 0,
+      "zero_scores_before": 5,
+      "zero_scores_after": 5,
+      "score_ranks_before": {
+       "altiplano": 1,
+       "atacama": 1,
+       "dryvalleys": 1,
+       "haughton": 1,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 1,
+       "atacama": 1,
+       "dryvalleys": 1,
+       "haughton": 1,
+       "maunakea": 1
+      }
+     },
+     "moon/slope_deg": {
+      "sites": 3,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 0,
+      "zero_scores_before": 2,
+      "zero_scores_after": 2,
+      "score_ranks_before": {
+       "altiplano": 2,
+       "atacama": 2,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 2,
+       "atacama": 2,
+       "maunakea": 1
+      }
+     },
+     "moon/roughness_m": {
+      "sites": 3,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 1,
+      "zero_scores_before": 1,
+      "zero_scores_after": 3,
+      "score_ranks_before": {
+       "altiplano": 1,
+       "atacama": 1,
+       "maunakea": 3
+      },
+      "score_ranks_after": {
+       "altiplano": 1,
+       "atacama": 1,
+       "maunakea": 1
+      }
+     }
+    }
+   },
+   {
+    "factor": 1.2,
+    "label_changes": 0,
+    "labels_compared": 16,
+    "changed": [],
+    "max_score_change": 0.17,
+    "rankings": {
+     "moon/thermal_swing_K": {
+      "sites": 5,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 0,
+      "zero_scores_before": 0,
+      "zero_scores_after": 0,
+      "score_ranks_before": {
+       "altiplano": 3,
+       "atacama": 2,
+       "dryvalleys": 5,
+       "haughton": 4,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 3,
+       "atacama": 2,
+       "dryvalleys": 5,
+       "haughton": 4,
+       "maunakea": 1
+      }
+     },
+     "mars/mean_temperature_K": {
+      "sites": 5,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 4,
+      "zero_scores_before": 5,
+      "zero_scores_after": 4,
+      "score_ranks_before": {
+       "altiplano": 1,
+       "atacama": 1,
+       "dryvalleys": 1,
+       "haughton": 1,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 2,
+       "atacama": 2,
+       "dryvalleys": 1,
+       "haughton": 2,
+       "maunakea": 2
+      }
+     },
+     "moon/slope_deg": {
+      "sites": 3,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 0,
+      "zero_scores_before": 2,
+      "zero_scores_after": 2,
+      "score_ranks_before": {
+       "altiplano": 2,
+       "atacama": 2,
+       "maunakea": 1
+      },
+      "score_ranks_after": {
+       "altiplano": 2,
+       "atacama": 2,
+       "maunakea": 1
+      }
+     },
+     "moon/roughness_m": {
+      "sites": 3,
+      "gap_rank_changes": 0,
+      "score_rank_changes": 0,
+      "zero_scores_before": 1,
+      "zero_scores_after": 1,
+      "score_ranks_before": {
+       "altiplano": 1,
+       "atacama": 1,
+       "maunakea": 3
+      },
+      "score_ranks_after": {
+       "altiplano": 1,
+       "atacama": 1,
+       "maunakea": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ "would_change_not_applied": [
+  "atacama: does not rank near the top on mars/mean_temperature_K; would not change any tolerance to move it. The source names atacama for extreme dryness and soil chemistry, which no number in this atlas measures. Would add a metric for that.",
+  "maunakea: does not rank near the top on moon/roughness_m; would not change any tolerance to move it. The source names maunakea for lunar resource (ISRU) field testing, which no number in this atlas measures. Would add a metric for that.",
+  "Negative control: would finish the Amazon AppEEARS request and rerun validate.py.",
+  "Sensitivity: no label changes at ±20% because the labels now are 16 weak; would show the scores beside the labels so small differences stay visible.",
+  "Terrain: haughton and dryvalleys have no terrain numbers (outside SRTM); would add a polar elevation dataset."
+ ]
+}

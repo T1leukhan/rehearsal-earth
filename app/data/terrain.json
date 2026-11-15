@@ -1,0 +1,349 @@
+{
+  "source_id": "srtmgl1_v3",
+  "earth_model": "sphere, radius 6371008.8 m",
+  "square_side_m": 10000.0,
+  "methods": {
+    "slope": "central difference: 4 neighbours (N, S, E, W) in a 3x3 window",
+    "roughness": "best-fit plane removed in each window (local tilt removed), then population standard deviation of the leftover heights"
+  },
+  "srtm_coverage": {
+    "north_deg": 60.0,
+    "south_deg": -56.0,
+    "source_url": "https://cmr.earthdata.nasa.gov/search/concepts/C2763266360-LPCLOUD.html"
+  },
+  "sites": {
+    "atacama": {
+      "tile": {
+        "file": "S24W070.SRTMGL1.hgt.zip (S24W070.hgt inside)",
+        "bounds_deg": {
+          "west": -70.000139,
+          "east": -68.999861,
+          "south": -24.000139,
+          "north": -22.999861
+        },
+        "shape_rows_cols": [
+          3601,
+          3601
+        ],
+        "pixel_deg": 0.0002777777777777778,
+        "missing_pixels": 0
+      },
+      "thermal_point_lat_lon_deg": [
+        -23.5,
+        -69.5
+      ],
+      "square_centre_lat_lon_deg": [
+        -23.5,
+        -69.5
+      ],
+      "offset_deg_lat_lon": [
+        0.0,
+        0.0
+      ],
+      "offset_m": {
+        "north_south": 0,
+        "east_west_at_square": 0,
+        "straight_line": 0
+      },
+      "square_fits_in_tile": true,
+      "areas": {
+        "whole_tile": {
+          "description": "whole 1 x 1 degree tile, edge pixels skipped",
+          "resolution_m_ns_ew": [
+            30.89,
+            28.33
+          ],
+          "slope_deg": {
+            "mean": 5.01,
+            "median": 3.55,
+            "p90": 10.83,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              85.0
+            ],
+            "pixels_used": 12952801
+          },
+          "roughness_m": {
+            "median": 0.57,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              85.0
+            ],
+            "pixels_used": 12952801
+          },
+          "resolution_note": "east-west pixel size is the tile average; it ranges 28.22-28.43 m"
+        },
+        "square_10km": {
+          "description": "square centred on square_centre_lat_lon_deg",
+          "centre_lat_lon_deg": [
+            -23.5,
+            -69.5
+          ],
+          "size_px_rows_cols": [
+            323,
+            353
+          ],
+          "size_m_ns_ew": [
+            9976.7,
+            9999.0
+          ],
+          "resolution_m_ns_ew": [
+            30.89,
+            28.33
+          ],
+          "slope_deg": {
+            "mean": 7.67,
+            "median": 5.37,
+            "p90": 17.78,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              85.0
+            ],
+            "pixels_used": 114019
+          },
+          "roughness_m": {
+            "median": 0.71,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              85.0
+            ],
+            "pixels_used": 114019
+          }
+        }
+      }
+    },
+    "altiplano": {
+      "tile": {
+        "file": "S21W069.SRTMGL1.hgt.zip (S21W069.hgt inside)",
+        "bounds_deg": {
+          "west": -69.000139,
+          "east": -67.999861,
+          "south": -21.000139,
+          "north": -19.999861
+        },
+        "shape_rows_cols": [
+          3601,
+          3601
+        ],
+        "pixel_deg": 0.0002777777777777778,
+        "missing_pixels": 0
+      },
+      "thermal_point_lat_lon_deg": [
+        -20.0,
+        -68.0
+      ],
+      "square_centre_lat_lon_deg": [
+        -20.5,
+        -68.5
+      ],
+      "offset_deg_lat_lon": [
+        -0.5,
+        -0.5
+      ],
+      "offset_m": {
+        "north_south": 55598,
+        "east_west_at_square": 52077,
+        "straight_line": 76235
+      },
+      "square_fits_in_tile": true,
+      "areas": {
+        "whole_tile": {
+          "description": "whole 1 x 1 degree tile, edge pixels skipped",
+          "resolution_m_ns_ew": [
+            30.89,
+            28.93
+          ],
+          "slope_deg": {
+            "mean": 8.27,
+            "median": 5.63,
+            "p90": 19.19,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              86.8
+            ],
+            "pixels_used": 12952801
+          },
+          "roughness_m": {
+            "median": 0.76,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              86.8
+            ],
+            "pixels_used": 12952801
+          },
+          "resolution_note": "east-west pixel size is the tile average; it ranges 28.84-29.02 m"
+        },
+        "square_10km": {
+          "description": "square centred on square_centre_lat_lon_deg",
+          "centre_lat_lon_deg": [
+            -20.5,
+            -68.5
+          ],
+          "size_px_rows_cols": [
+            323,
+            345
+          ],
+          "size_m_ns_ew": [
+            9976.7,
+            9981.4
+          ],
+          "resolution_m_ns_ew": [
+            30.89,
+            28.93
+          ],
+          "slope_deg": {
+            "mean": 4.44,
+            "median": 3.41,
+            "p90": 8.68,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              86.8
+            ],
+            "pixels_used": 111435
+          },
+          "roughness_m": {
+            "median": 0.71,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              86.8
+            ],
+            "pixels_used": 111435
+          }
+        }
+      },
+      "why_moved": "The thermal point -20.0, -68.0 is the corner where four SRTM tiles meet (S20W068, S21W068, S20W069, S21W069), so a 10 km square around it would need all four. -20.5, -68.5 is the centre of tile S21W069, so the whole square fits inside that one tile."
+    },
+    "maunakea": {
+      "tile": {
+        "file": "N19W156.SRTMGL1.hgt.zip (N19W156.hgt inside)",
+        "bounds_deg": {
+          "west": -156.000139,
+          "east": -154.999861,
+          "south": 18.999861,
+          "north": 20.000139
+        },
+        "shape_rows_cols": [
+          3601,
+          3601
+        ],
+        "pixel_deg": 0.0002777777777777778,
+        "missing_pixels": 0
+      },
+      "thermal_point_lat_lon_deg": [
+        19.8,
+        -155.5
+      ],
+      "square_centre_lat_lon_deg": [
+        19.8,
+        -155.5
+      ],
+      "offset_deg_lat_lon": [
+        0.0,
+        0.0
+      ],
+      "offset_m": {
+        "north_south": 0,
+        "east_west_at_square": 0,
+        "straight_line": 0
+      },
+      "square_fits_in_tile": true,
+      "areas": {
+        "whole_tile": {
+          "description": "whole 1 x 1 degree tile, edge pixels skipped",
+          "resolution_m_ns_ew": [
+            30.89,
+            29.12
+          ],
+          "slope_deg": {
+            "mean": 4.79,
+            "median": 4.05,
+            "p90": 10.5,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              87.3
+            ],
+            "pixels_used": 12952801
+          },
+          "roughness_m": {
+            "median": 0.51,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              87.3
+            ],
+            "pixels_used": 12952801
+          },
+          "resolution_note": "east-west pixel size is the tile average; it ranges 29.02-29.20 m"
+        },
+        "square_10km": {
+          "description": "square centred on square_centre_lat_lon_deg",
+          "centre_lat_lon_deg": [
+            19.8,
+            -155.5
+          ],
+          "size_px_rows_cols": [
+            323,
+            345
+          ],
+          "size_m_ns_ew": [
+            9976.7,
+            10026.2
+          ],
+          "resolution_m_ns_ew": [
+            30.89,
+            29.06
+          ],
+          "slope_deg": {
+            "mean": 14.06,
+            "median": 13.94,
+            "p90": 21.65,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              87.2
+            ],
+            "pixels_used": 111435
+          },
+          "roughness_m": {
+            "median": 0.81,
+            "window_px": 3,
+            "window_m_ns_ew": [
+              92.7,
+              87.2
+            ],
+            "pixels_used": 111435
+          }
+        }
+      }
+    }
+  },
+  "not_assessed": [
+    {
+      "site": "haughton",
+      "latitude_deg": 75.4,
+      "metrics": [
+        "slope_deg",
+        "roughness_m"
+      ],
+      "reason": "outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit"
+    },
+    {
+      "site": "dryvalleys",
+      "latitude_deg": -77.5,
+      "metrics": [
+        "slope_deg",
+        "roughness_m"
+      ],
+      "reason": "outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit"
+    }
+  ]
+}

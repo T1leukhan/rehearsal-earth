@@ -1,0 +1,796 @@
+{
+ "formula": "s = max(0, 1 - |x_earth - x_ref| / tau)",
+ "labels": {
+  "strong": ">= 0.8",
+  "partial": "0.5 to < 0.8",
+  "weak": "< 0.5",
+  "not assessed": "x_earth, x_ref or tau is null"
+ },
+ "tau": {
+  "moon/thermal_swing_K": 300,
+  "moon/slope_deg": 5.6,
+  "moon/roughness_m": 0.36,
+  "moon/mean_temperature_K": null,
+  "mars/thermal_swing_K": null,
+  "mars/slope_deg": null,
+  "mars/roughness_m": null,
+  "mars/mean_temperature_K": 23.92
+ },
+ "tau_reason": {
+  "moon/thermal_swing_K": "Setting tau to the lunar swing itself makes the score the share of the Moon's swing that a site reproduces, so 0 means no swing and 1 means the full lunar swing.",
+  "moon/slope_deg": "The spread of median slope across our three measured Earth sites shows how much this number naturally varies between Earth analogs, so a site that differs from the Malapert reference by more than that spread counts as no match.",
+  "moon/roughness_m": "Tau is the Moon's own median roughness, so a gap as large as the Moon's own roughness counts as no match; the spread of only three sites (0.06 m) was too close to the 0.01 m rounding of the data to use.",
+  "mars/mean_temperature_K": "The spread of mean temperature across our five Earth sites shows how much this number naturally varies between Earth analogs, so a site that differs from Mars by more than that spread counts as no match."
+ },
+ "inputs": [
+  "config.json",
+  "thermal.json",
+  "terrain.json"
+ ],
+ "cards": [
+  {
+   "site": "altiplano",
+   "strong_match": [
+    "None: no metric scored 0.8 or more."
+   ],
+   "breaks_down": [
+    "Day-night temperature swing vs Moon: Earth 5.8 K, Moon 300 K, gap 294.20 vs tolerance 300.00 K -> weak (0.02); the site's day-night temperature swing is 1.9% of the Moon's",
+    "Mean temperature vs Mars: Earth 281.93 K, Mars 214 K, gap 67.93 vs tolerance 23.92 K -> weak (0.00)"
+   ],
+   "not_testable_on_earth": [
+    "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+    "Not assessed: mean temperature vs Moon (no Moon reference given)",
+    "Not assessed: day-night temperature swing vs Mars (no Mars swing reference given)"
+   ],
+   "how_engineers_use_it": [
+    "Moon swing: rank 3 of 5. Swing 5.8 K is 1.9% of the Moon's 300 K, a gap of 294.2 K.",
+    "Mars mean temperature: rank 3 of 5. Mean 281.93 K vs Mars 214 K, a gap of 67.93 K.",
+    "Lowest temperature: -6.05 \u00b0C (night average over one composite period, starting 2025-07-04).",
+    "Supports: cold-soak testing down to -6.05 \u00b0C, below the 0 \u00b0C threshold.",
+    "Cannot support lunar thermal cycling: swing is 1.9% of the Moon's, under the 10% limit.",
+    "Cannot stand in for the Mars mean temperature: score 0.0 is below the 0.5 needed for partial."
+   ],
+   "comparisons": [
+    {
+     "body": "moon",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 5.8,
+     "ref": 300,
+     "tau": 300,
+     "gap": 294.2,
+     "score": 0.02,
+     "label": "weak",
+     "percent_of_ref": 1.9,
+     "rank": 3,
+     "of": 5
+    },
+    {
+     "body": "moon",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 3.41,
+     "ref": 17.81,
+     "tau": 5.6,
+     "gap": 14.4,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 3,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.71,
+     "ref": 0.36,
+     "tau": 0.36,
+     "gap": 0.35,
+     "score": 0.03,
+     "label": "weak",
+     "rank": 1,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 281.93,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Moon reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 5.8,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars swing reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 3.41,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.71,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 281.93,
+     "ref": 214,
+     "tau": 23.92,
+     "gap": 67.93,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 3,
+     "of": 5
+    }
+   ],
+   "terrain": {
+    "strong_match": [
+     "None: no metric scored 0.8 or more."
+    ],
+    "breaks_down": [
+     "Median slope vs Moon: Earth 3.41 deg, Moon 17.81 deg, gap 14.40 vs tolerance 5.60 deg -> weak (0.00)",
+     "Median roughness vs Moon: Earth 0.71 m, Moon 0.36 m, gap 0.35 vs tolerance 0.36 m -> weak (0.03)"
+    ],
+    "not_testable_on_earth": [
+     "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+     "Not assessed: terrain (slope, roughness) vs Mars (no Mars terrain reference given)"
+    ],
+    "how_engineers_use_it": [
+     "Moon slope: rank 3 of 3. Median slope 3.41\u00b0 vs Malapert 17.81\u00b0, a gap of 14.4\u00b0; 90th percentile slope 8.68\u00b0.",
+     "Moon roughness: rank 1 of 3. Median roughness 0.71 m vs Malapert 0.36 m, a gap of 0.35 m.",
+     "Cannot support slope-climbing tests at the Malapert median slope of 17.81\u00b0: the site's 90th percentile slope is only 8.68\u00b0.",
+     "Cannot stand in for the Malapert median slope: score 0.0 is below the 0.5 needed for partial.",
+     "Cannot stand in for the Malapert median roughness: score 0.03 is below the 0.5 needed for partial.",
+     "Cannot reproduce lunar loads: Earth gravity is 9.81 m/s\u00b2 vs the Moon's 1.62 m/s\u00b2, so wheel loads, sinkage and traction on these slopes are not lunar values.",
+     "Cannot test lunar dust: this atlas has no dust or regolith grain data, so dust is not assessed."
+    ]
+   }
+  },
+  {
+   "site": "atacama",
+   "strong_match": [
+    "None: no metric scored 0.8 or more."
+   ],
+   "breaks_down": [
+    "Day-night temperature swing vs Moon: Earth 22.24 K, Moon 300 K, gap 277.76 vs tolerance 300.00 K -> weak (0.07); the site's day-night temperature swing is 7.4% of the Moon's",
+    "Mean temperature vs Mars: Earth 297.32 K, Mars 214 K, gap 83.32 vs tolerance 23.92 K -> weak (0.00)"
+   ],
+   "not_testable_on_earth": [
+    "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+    "Not assessed: mean temperature vs Moon (no Moon reference given)",
+    "Not assessed: day-night temperature swing vs Mars (no Mars swing reference given)"
+   ],
+   "how_engineers_use_it": [
+    "Moon swing: rank 2 of 5. Swing 22.24 K is 7.4% of the Moon's 300 K, a gap of 277.76 K.",
+    "Mars mean temperature: rank 5 of 5. Mean 297.32 K vs Mars 214 K, a gap of 83.32 K.",
+    "Lowest temperature: 7.11 \u00b0C (night average over one composite period, starting 2025-08-21).",
+    "Does not support cold-soak testing: 7.11 \u00b0C is not below the 0 \u00b0C threshold.",
+    "Cannot support lunar thermal cycling: swing is 7.4% of the Moon's, under the 10% limit.",
+    "Cannot stand in for the Mars mean temperature: score 0.0 is below the 0.5 needed for partial."
+   ],
+   "comparisons": [
+    {
+     "body": "moon",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 22.24,
+     "ref": 300,
+     "tau": 300,
+     "gap": 277.76,
+     "score": 0.07,
+     "label": "weak",
+     "percent_of_ref": 7.4,
+     "rank": 2,
+     "of": 5
+    },
+    {
+     "body": "moon",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 5.37,
+     "ref": 17.81,
+     "tau": 5.6,
+     "gap": 12.44,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 2,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.71,
+     "ref": 0.36,
+     "tau": 0.36,
+     "gap": 0.35,
+     "score": 0.03,
+     "label": "weak",
+     "rank": 2,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 297.32,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Moon reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 22.24,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars swing reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 5.37,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.71,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 297.32,
+     "ref": 214,
+     "tau": 23.92,
+     "gap": 83.32,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 5,
+     "of": 5
+    }
+   ],
+   "terrain": {
+    "strong_match": [
+     "None: no metric scored 0.8 or more."
+    ],
+    "breaks_down": [
+     "Median slope vs Moon: Earth 5.37 deg, Moon 17.81 deg, gap 12.44 vs tolerance 5.60 deg -> weak (0.00)",
+     "Median roughness vs Moon: Earth 0.71 m, Moon 0.36 m, gap 0.35 vs tolerance 0.36 m -> weak (0.03)"
+    ],
+    "not_testable_on_earth": [
+     "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+     "Not assessed: terrain (slope, roughness) vs Mars (no Mars terrain reference given)"
+    ],
+    "how_engineers_use_it": [
+     "Moon slope: rank 2 of 3. Median slope 5.37\u00b0 vs Malapert 17.81\u00b0, a gap of 12.44\u00b0; 90th percentile slope 17.78\u00b0.",
+     "Moon roughness: rank 2 of 3. Median roughness 0.71 m vs Malapert 0.36 m, a gap of 0.35 m.",
+     "Cannot support slope-climbing tests at the Malapert median slope of 17.81\u00b0: the site's 90th percentile slope is only 17.78\u00b0.",
+     "Cannot stand in for the Malapert median slope: score 0.0 is below the 0.5 needed for partial.",
+     "Cannot stand in for the Malapert median roughness: score 0.03 is below the 0.5 needed for partial.",
+     "Cannot reproduce lunar loads: Earth gravity is 9.81 m/s\u00b2 vs the Moon's 1.62 m/s\u00b2, so wheel loads, sinkage and traction on these slopes are not lunar values.",
+     "Cannot test lunar dust: this atlas has no dust or regolith grain data, so dust is not assessed."
+    ]
+   }
+  },
+  {
+   "site": "dryvalleys",
+   "strong_match": [
+    "None: no metric scored 0.8 or more."
+   ],
+   "breaks_down": [
+    "Day-night temperature swing vs Moon: Earth 0.86 K, Moon 300 K, gap 299.14 vs tolerance 300.00 K -> weak (0.00); the site's day-night temperature swing is 0.3% of the Moon's",
+    "Mean temperature vs Mars: Earth 242.37 K, Mars 214 K, gap 28.37 vs tolerance 23.92 K -> weak (0.00)"
+   ],
+   "not_testable_on_earth": [
+    "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+    "Not assessed: mean temperature vs Moon (no Moon reference given)",
+    "Not assessed: day-night temperature swing vs Mars (no Mars swing reference given)"
+   ],
+   "how_engineers_use_it": [
+    "Moon swing: rank 5 of 5. Swing 0.86 K is 0.3% of the Moon's 300 K, a gap of 299.14 K.",
+    "Mars mean temperature: rank 1 of 5. Mean 242.37 K vs Mars 214 K, a gap of 28.37 K.",
+    "Lowest temperature: -43.33 \u00b0C (night average over one composite period, starting 2023-08-13).",
+    "Supports: cold-soak testing down to -43.33 \u00b0C, below the 0 \u00b0C threshold.",
+    "Cannot support lunar thermal cycling: swing is 0.3% of the Moon's, under the 10% limit.",
+    "Cannot stand in for the Mars mean temperature: score 0.0 is below the 0.5 needed for partial."
+   ],
+   "comparisons": [
+    {
+     "body": "moon",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 0.86,
+     "ref": 300,
+     "tau": 300,
+     "gap": 299.14,
+     "score": 0.0,
+     "label": "weak",
+     "percent_of_ref": 0.3,
+     "rank": 5,
+     "of": 5
+    },
+    {
+     "body": "moon",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": null,
+     "ref": 17.81,
+     "tau": 5.6,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit"
+    },
+    {
+     "body": "moon",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": null,
+     "ref": 0.36,
+     "tau": 0.36,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit"
+    },
+    {
+     "body": "moon",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 242.37,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Moon reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 0.86,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars swing reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": null,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit"
+    },
+    {
+     "body": "mars",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": null,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit"
+    },
+    {
+     "body": "mars",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 242.37,
+     "ref": 214,
+     "tau": 23.92,
+     "gap": 28.37,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 1,
+     "of": 5
+    }
+   ],
+   "terrain": {
+    "strong_match": [
+     "No scored metric on this tab: outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit; see the other tab"
+    ],
+    "breaks_down": [
+     "No scored metric on this tab: outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit; see the other tab"
+    ],
+    "not_testable_on_earth": [
+     "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+     "Not assessed: terrain (slope, roughness) vs Moon (outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit)",
+     "Not assessed: terrain (slope, roughness) vs Mars (outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit)"
+    ],
+    "how_engineers_use_it": [
+     "Terrain: not assessed (outside SRTM coverage: latitude -77.5\u00b0 is south of 56\u00b0 S, SRTM's southern limit)."
+    ]
+   }
+  },
+  {
+   "site": "haughton",
+   "strong_match": [
+    "None: no metric scored 0.8 or more."
+   ],
+   "breaks_down": [
+    "Day-night temperature swing vs Moon: Earth 2.06 K, Moon 300 K, gap 297.94 vs tolerance 300.00 K -> weak (0.01); the site's day-night temperature swing is 0.7% of the Moon's",
+    "Mean temperature vs Mars: Earth 251.14 K, Mars 214 K, gap 37.14 vs tolerance 23.92 K -> weak (0.00)"
+   ],
+   "not_testable_on_earth": [
+    "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+    "Not assessed: mean temperature vs Moon (no Moon reference given)",
+    "Not assessed: day-night temperature swing vs Mars (no Mars swing reference given)"
+   ],
+   "how_engineers_use_it": [
+    "Moon swing: rank 4 of 5. Swing 2.06 K is 0.7% of the Moon's 300 K, a gap of 297.94 K.",
+    "Mars mean temperature: rank 2 of 5. Mean 251.14 K vs Mars 214 K, a gap of 37.14 K.",
+    "Lowest temperature: -47.77 \u00b0C (day average over one composite period, starting 2023-01-17).",
+    "Supports: cold-soak testing down to -47.77 \u00b0C, below the 0 \u00b0C threshold.",
+    "Cannot support lunar thermal cycling: swing is 0.7% of the Moon's, under the 10% limit.",
+    "Cannot stand in for the Mars mean temperature: score 0.0 is below the 0.5 needed for partial."
+   ],
+   "comparisons": [
+    {
+     "body": "moon",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 2.06,
+     "ref": 300,
+     "tau": 300,
+     "gap": 297.94,
+     "score": 0.01,
+     "label": "weak",
+     "percent_of_ref": 0.7,
+     "rank": 4,
+     "of": 5
+    },
+    {
+     "body": "moon",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": null,
+     "ref": 17.81,
+     "tau": 5.6,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit"
+    },
+    {
+     "body": "moon",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": null,
+     "ref": 0.36,
+     "tau": 0.36,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit"
+    },
+    {
+     "body": "moon",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 251.14,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Moon reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 2.06,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars swing reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": null,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit"
+    },
+    {
+     "body": "mars",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": null,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit"
+    },
+    {
+     "body": "mars",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 251.14,
+     "ref": 214,
+     "tau": 23.92,
+     "gap": 37.14,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 2,
+     "of": 5
+    }
+   ],
+   "terrain": {
+    "strong_match": [
+     "No scored metric on this tab: outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit; see the other tab"
+    ],
+    "breaks_down": [
+     "No scored metric on this tab: outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit; see the other tab"
+    ],
+    "not_testable_on_earth": [
+     "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+     "Not assessed: terrain (slope, roughness) vs Moon (outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit)",
+     "Not assessed: terrain (slope, roughness) vs Mars (outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit)"
+    ],
+    "how_engineers_use_it": [
+     "Terrain: not assessed (outside SRTM coverage: latitude 75.4\u00b0 is north of 60\u00b0 N, SRTM's northern limit)."
+    ]
+   }
+  },
+  {
+   "site": "maunakea",
+   "strong_match": [
+    "None: no metric scored 0.8 or more."
+   ],
+   "breaks_down": [
+    "Day-night temperature swing vs Moon: Earth 23.58 K, Moon 300 K, gap 276.42 vs tolerance 300.00 K -> weak (0.08); the site's day-night temperature swing is 7.9% of the Moon's",
+    "Mean temperature vs Mars: Earth 287.37 K, Mars 214 K, gap 73.37 vs tolerance 23.92 K -> weak (0.00)"
+   ],
+   "not_testable_on_earth": [
+    "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+    "Not assessed: mean temperature vs Moon (no Moon reference given)",
+    "Not assessed: day-night temperature swing vs Mars (no Mars swing reference given)"
+   ],
+   "how_engineers_use_it": [
+    "Moon swing: rank 1 of 5. Swing 23.58 K is 7.9% of the Moon's 300 K, a gap of 276.42 K.",
+    "Mars mean temperature: rank 4 of 5. Mean 287.37 K vs Mars 214 K, a gap of 73.37 K.",
+    "Lowest temperature: -4.43 \u00b0C (night average over one composite period, starting 2023-02-18).",
+    "Supports: cold-soak testing down to -4.43 \u00b0C, below the 0 \u00b0C threshold.",
+    "Cannot support lunar thermal cycling: swing is 7.9% of the Moon's, under the 10% limit.",
+    "Cannot stand in for the Mars mean temperature: score 0.0 is below the 0.5 needed for partial."
+   ],
+   "comparisons": [
+    {
+     "body": "moon",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 23.58,
+     "ref": 300,
+     "tau": 300,
+     "gap": 276.42,
+     "score": 0.08,
+     "label": "weak",
+     "percent_of_ref": 7.9,
+     "rank": 1,
+     "of": 5
+    },
+    {
+     "body": "moon",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 13.94,
+     "ref": 17.81,
+     "tau": 5.6,
+     "gap": 3.87,
+     "score": 0.31,
+     "label": "weak",
+     "rank": 1,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.81,
+     "ref": 0.36,
+     "tau": 0.36,
+     "gap": 0.45,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 3,
+     "of": 3
+    },
+    {
+     "body": "moon",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 287.37,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Moon reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "thermal_swing_K",
+     "name": "day-night temperature swing",
+     "unit": "K",
+     "earth": 23.58,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars swing reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "slope_deg",
+     "name": "median slope",
+     "unit": "deg",
+     "earth": 13.94,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "roughness_m",
+     "name": "median roughness",
+     "unit": "m",
+     "earth": 0.81,
+     "ref": null,
+     "tau": null,
+     "gap": null,
+     "score": null,
+     "label": "not assessed",
+     "note": "no Mars terrain reference given"
+    },
+    {
+     "body": "mars",
+     "metric": "mean_temperature_K",
+     "name": "mean temperature",
+     "unit": "K",
+     "earth": 287.37,
+     "ref": 214,
+     "tau": 23.92,
+     "gap": 73.37,
+     "score": 0.0,
+     "label": "weak",
+     "rank": 4,
+     "of": 5
+    }
+   ],
+   "terrain": {
+    "strong_match": [
+     "None: no metric scored 0.8 or more."
+    ],
+    "breaks_down": [
+     "Median slope vs Moon: Earth 13.94 deg, Moon 17.81 deg, gap 3.87 vs tolerance 5.60 deg -> weak (0.31)",
+     "Median roughness vs Moon: Earth 0.81 m, Moon 0.36 m, gap 0.45 vs tolerance 0.36 m -> weak (0.00)"
+    ],
+    "not_testable_on_earth": [
+     "Gravity: Earth 9.81 m/s2 vs Moon 1.62 m/s2 and Mars 3.71 m/s2 (Earth pulls 6.1x and 2.6x harder). Anything that depends on weight cannot be reproduced at this site.",
+     "Not assessed: terrain (slope, roughness) vs Mars (no Mars terrain reference given)"
+    ],
+    "how_engineers_use_it": [
+     "Moon slope: rank 1 of 3. Median slope 13.94\u00b0 vs Malapert 17.81\u00b0, a gap of 3.87\u00b0; 90th percentile slope 21.65\u00b0.",
+     "Moon roughness: rank 3 of 3. Median roughness 0.81 m vs Malapert 0.36 m, a gap of 0.45 m.",
+     "Supports: slope-climbing tests at the Malapert median slope of 17.81\u00b0: the site's 90th percentile slope is 21.65\u00b0, so its steepest tenth is at least that steep.",
+     "Cannot stand in for the Malapert median slope: score 0.31 is below the 0.5 needed for partial.",
+     "Cannot stand in for the Malapert median roughness: score 0.0 is below the 0.5 needed for partial.",
+     "Cannot reproduce lunar loads: Earth gravity is 9.81 m/s\u00b2 vs the Moon's 1.62 m/s\u00b2, so wheel loads, sinkage and traction on these slopes are not lunar values.",
+     "Cannot test lunar dust: this atlas has no dust or regolith grain data, so dust is not assessed."
+    ]
+   }
+  }
+ ]
+}

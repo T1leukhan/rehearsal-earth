@@ -1,0 +1,5 @@
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S20W068.SRTMGL1.hgt/S20W068.SRTMGL1.hgt.zip
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S21W068.SRTMGL1.hgt/S21W068.SRTMGL1.hgt.zip
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S21W069.SRTMGL1.hgt/S21W069.SRTMGL1.hgt.zip
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S20W069.SRTMGL1.hgt/S20W069.SRTMGL1.hgt.zip
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/N19W156.SRTMGL1.hgt/N19W156.SRTMGL1.hgt.zip

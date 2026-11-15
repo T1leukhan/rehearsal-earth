@@ -1,0 +1,70 @@
+{
+  "body": "moon",
+  "source_id": "lro_diviner_gdr_l3",
+  "band": {
+    "lat_min_deg": -5.0,
+    "lat_max_deg": 5.0,
+    "lon_deg": [
+      0,
+      360
+    ],
+    "rows": [
+      340,
+      379
+    ],
+    "window_m_ns": 303233.5,
+    "window_note": "all longitudes, so the band goes once around the Moon"
+  },
+  "resolution_m": 7580.837606,
+  "resolution_note": "pixel size at the equator; 4 pixels per degree",
+  "scale_factor_K_per_DN": 0.02,
+  "nodata_DN": -32768,
+  "statistics_method": "pixels with data only; median and percentiles by numpy (linear interpolation); rounded to 0.01 K",
+  "day": {
+    "file": "dgdr_tbol_avg_cyl_20100121d_004_img.img",
+    "local_time_h": [
+      6,
+      18
+    ],
+    "period_utc": [
+      "2010-01-21T01:00:00",
+      "2010-02-17T09:00:00"
+    ],
+    "pixels_total": 57600,
+    "pixels_with_data": 11820,
+    "share_with_data_percent": 20.52,
+    "median_K": 331.9,
+    "p5_K": 291.26,
+    "p95_K": 355.78
+  },
+  "night": {
+    "file": "dgdr_tbol_avg_cyl_20100107n_004_img.img",
+    "local_time_h": [
+      18,
+      6
+    ],
+    "period_utc": [
+      "2010-01-07T10:00:00",
+      "2010-02-03T18:00:00"
+    ],
+    "pixels_total": 57600,
+    "pixels_with_data": 16865,
+    "share_with_data_percent": 29.28,
+    "median_K": 95.84,
+    "p5_K": 94.0,
+    "p95_K": 98.28
+  },
+  "observed_range_K": {
+    "value": 261.78,
+    "label": "observed range across both maps, not a daily swing",
+    "method": "day p95_K minus night p5_K"
+  },
+  "missing": [],
+  "caveats": [
+    "Local-time drift: the labels say LRO's orbit gives 'a drift in local time across each map', and the files do not store each pixel's local time. Daytime values are somewhere between 06:00 and 18:00 local time and nighttime values somewhere between 18:00 and 06:00, not at noon or midnight.",
+    "Different months: the daytime map covers 2010-01-21 to 2010-02-17 and the nighttime map covers 2010-01-07 to 2010-02-03 (UTC). They overlap but are not the same period.",
+    "7.6 km pixels: each pixel is 7580.8 m across at the equator (4 pixels per degree).",
+    "Empty pixels: many pixels have no data (-32768). Statistics use only pixels with data; the share of pixels with data is reported for each map.",
+    "Observed range is not a daily swing: day p95 minus night p5 compares two different groups of pixels, seen at different local times in different months."
+  ]
+}

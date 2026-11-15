@@ -1,0 +1,10 @@
+# Raw downloaded datasets (too big for Git)
+data/raw/
+
+# Python virtual environment (each person makes their own)
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/

@@ -1,0 +1,89 @@
+{
+  "site": "Site23, Malapert massif, lunar south pole",
+  "source_id": "lola_5mpp_site23",
+  "map": {
+    "file": "Site23_final_adj_5mpp_surf.tif",
+    "shape_rows_cols": [
+      4200,
+      4200
+    ],
+    "pixel_m": 5.0,
+    "bounds_m": [
+      -11000.0,
+      111000.0,
+      10000.0,
+      132000.0
+    ],
+    "size_m": [
+      21000.0,
+      21000.0
+    ],
+    "crs": "+proj=stere +lat_0=-90 +lat_ts=-90 +lon_0=0 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs=True",
+    "missing_pixels": 0
+  },
+  "averaging": {
+    "method": "block mean of 6 x 6 pixels; a block with any missing pixel would be left missing",
+    "block_px": 6,
+    "resolution_m": 30.0,
+    "shape_rows_cols": [
+      700,
+      700
+    ]
+  },
+  "methods": {
+    "slope": "central difference: 4 neighbours in a 3x3 window (slope_degrees from terrain.py)",
+    "roughness": "best-fit plane removed in each window, then population standard deviation of the leftover heights (roughness_detrended from terrain.py)"
+  },
+  "areas": {
+    "whole_site": {
+      "description": "whole Site23 map at 30 m, edge pixels skipped",
+      "resolution_m_ns_ew": [
+        30.0,
+        30.0
+      ],
+      "slope_deg": {
+        "mean": 17.17,
+        "median": 17.81,
+        "p90": 25.74,
+        "window_px": 3,
+        "window_m_ns_ew": [
+          90.0,
+          90.0
+        ],
+        "pixels_used": 487204
+      },
+      "roughness_m": {
+        "median": 0.36,
+        "window_px": 3,
+        "window_m_ns_ew": [
+          90.0,
+          90.0
+        ],
+        "pixels_used": 487204
+      }
+    }
+  },
+  "original_5m_slope": {
+    "file": "Site23_final_adj_5mpp_slp.tif",
+    "median_deg": 17.86,
+    "resolution_m": 5.0,
+    "pixels_used": 17640000,
+    "note": "LOLA's own slope map, not recomputed here; for comparison only"
+  },
+  "not_assessed": [],
+  "caveats": [
+    "Slope uncertainty: LOLA's median RMS slope error is about 1.5 to 2.5 degrees. The product page says 'The LDEM height and slope uncertainties within the RoIs are similar across all the sites with a median RMS Z error ~ 0.30 - 0.50 m and a median RMS slope error ~ 1.5 - 2.5\u00b0' (https://pgda.gsfc.nasa.gov/products/78). This is a median over the regions of interest of all sites, not a value for each Site23 pixel.",
+    "Interpolated heights: about 90 percent of the 5 m pixels are interpolated, not direct LOLA measurements. The product page says 'the fraction of interpolated 5-m pixels in these polar LDEMs is necessarily large (~90%)' (https://pgda.gsfc.nasa.gov/products/78). This is for the polar maps in general; the share for Site23 alone was not computed.",
+    "Block means: the 30 m heights are averages of 6 x 6 blocks of 5 m pixels. This smooths the surface and can lower the slope; compare with original_5m_slope.",
+    "Different areas: the Moon value covers the whole 21 km x 21 km Site23 map near the south pole (about 85.6 to 86.3 S); the Earth value in terrain.json covers a 10 km x 10 km square.",
+    "Projection: map meters are 0.10 to 0.15 percent longer than true ground meters at this site (polar stereographic, true scale at the pole). This was not corrected."
+  ],
+  "caveats_source": {
+    "url": "https://pgda.gsfc.nasa.gov/products/78",
+    "for": [
+      "slope uncertainty (median RMS slope error ~1.5-2.5 deg)",
+      "share of interpolated 5 m pixels (~90%)"
+    ],
+    "checked": "page text read on 2026-11-14"
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "references": {
+    "moon": {
+      "name": "Moon, equator",
+      "thermal_swing_K": {
+        "value": 300,
+        "detail": "about 400 K by day to under 100 K by night",
+        "source_id": "msfc_lunar_environment_2008",
+        "source_url": "https://ntrs.nasa.gov/api/citations/20080013552/downloads/20080013552.pdf"
+      },
+      "mean_temperature_K": {"value": null, "note": "no Moon reference given"},
+      "slope_deg": {
+        "value": 17.81,
+        "statistic": "median",
+        "mean": 17.17,
+        "p90": 25.74,
+        "site": "Site23, Malapert massif, lunar south pole (not the equator)",
+        "window_m": 90,
+        "resolution_m": 30,
+        "original_5m_median": 17.86,
+        "note": "Site23, Malapert massif (south pole); 30 m block means of LOLA 5 m heights, 3x3 window (90 m); copied from moon_terrain.json",
+        "source_id": "lola_5mpp_site23",
+        "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif"
+      },
+      "roughness_m": {
+        "value": 0.36,
+        "statistic": "median",
+        "site": "Site23, Malapert massif, lunar south pole (not the equator)",
+        "window_m": 90,
+        "resolution_m": 30,
+        "note": "Site23, Malapert massif (south pole); 30 m block means of LOLA 5 m heights, tilt removed in 3x3 window (90 m); copied from moon_terrain.json",
+        "source_id": "lola_5mpp_site23",
+        "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif"
+      },
+      "diviner_equator_K": {
+        "note": "additional references from LRO Diviner maps, copied from moon_thermal.json (written by pipeline/moon_thermal.py); a test checks they match. They are not used in any score: thermal_swing_K above (300 K) is still the reference.",
+        "band": "latitude -5 to +5 deg, all longitudes",
+        "window_m_ns": 303233.5,
+        "resolution_m": 7580.837606,
+        "day": {"median": 331.9, "p5": 291.26, "p95": 355.78, "share_with_data_percent": 20.52, "local_time_h": [6, 18]},
+        "night": {"median": 95.84, "p5": 94.0, "p95": 98.28, "share_with_data_percent": 29.28, "local_time_h": [18, 6]},
+        "observed_range": {"value": 261.78, "label": "observed range across both maps, not a daily swing"},
+        "source_id": "lro_diviner_gdr_l3",
+        "source_url": "https://doi.org/10.17189/wj0s-w188"
+      }
+    },
+    "mars": {
+      "name": "Mars, global mean",
+      "thermal_swing_K": {"value": null, "note": "no Mars swing reference given"},
+      "mean_temperature_K": {
+        "value": 214,
+        "detail": "average temperature ~214 K (-59 C)",
+        "source_id": "nssdc_mars_factsheet",
+        "source_url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+        "second_source": {
+          "source_id": "spaceref_mars_temperature",
+          "source_url": "https://spaceref.com/?p=24443",
+          "value_C": -60,
+          "value_K": 213.15,
+          "note": "page could not be read on 2026-11-08 (HTTP 403)"
+        }
+      },
+      "slope_deg": {"value": null, "note": "no Mars terrain reference given"},
+      "roughness_m": {"value": null, "note": "no Mars terrain reference given"}
+    }
+  },
+  "gravity_m_s2": {
+    "earth": {"value": 9.81, "detail": "standard gravity 9.80665 rounded", "source_url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"},
+    "moon": {"value": 1.62, "source_url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"},
+    "mars": {"value": 3.71, "detail": "as given by the team; NSSDC lists 3.73 mean and 3.69 at the equator", "source_url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+  },
+  "tolerance": {
+    "moon": {
+      "thermal_swing_K": {
+        "rule": "equal_to_reference",
+        "report_percent_of_reference": true,
+        "reason": "Setting tau to the lunar swing itself makes the score the share of the Moon's swing that a site reproduces, so 0 means no swing and 1 means the full lunar swing."
+      },
+      "mean_temperature_K": {"value": null, "note": "no Moon reference given"},
+      "slope_deg": {
+        "rule": "stdev_of_site_values",
+        "method": "sample standard deviation (n - 1) of the median slopes of the 10 km squares in terrain.json (3 sites), computed by score.py",
+        "reason": "The spread of median slope across our three measured Earth sites shows how much this number naturally varies between Earth analogs, so a site that differs from the Malapert reference by more than that spread counts as no match."
+      },
+      "roughness_m": {
+        "rule": "equal_to_reference",
+        "reason": "Tau is the Moon's own median roughness, so a gap as large as the Moon's own roughness counts as no match; the spread of only three sites (0.06 m) was too close to the 0.01 m rounding of the data to use."
+      }
+    },
+    "mars": {
+      "thermal_swing_K": {"value": null, "note": "no Mars swing reference given"},
+      "mean_temperature_K": {
+        "rule": "stdev_of_site_values",
+        "method": "sample standard deviation (n - 1) of the 5 sites' mean temperatures in thermal.json, computed by score.py",
+        "reason": "The spread of mean temperature across our five Earth sites shows how much this number naturally varies between Earth analogs, so a site that differs from Mars by more than that spread counts as no match."
+      },
+      "slope_deg": {"value": null, "note": "no Mars terrain reference given"},
+      "roughness_m": {"value": null, "note": "no Mars terrain reference given"}
+    }
+  },
+  "materials": {
+    "aluminum": {
+      "name": "aluminum (6061-T6)",
+      "alpha_per_K": 2.26e-5,
+      "nist_fit": {"a": -4.1277e2, "b": -3.0389e-1, "c": 8.7696e-3, "d": -9.9821e-6, "e": 0},
+      "source_id": "nist_cryogenic_materials",
+      "source_url": "https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm"
+    },
+    "steel": {
+      "name": "steel (304 stainless)",
+      "alpha_per_K": 1.54e-5,
+      "nist_fit": {"a": -2.9554e2, "b": -3.9811e-1, "c": 9.2683e-3, "d": -2.0261e-5, "e": 1.7127e-8},
+      "source_id": "nist_cryogenic_materials",
+      "source_url": "https://trc.nist.gov/cryogenics/materials/304Stainless/304Stainless_rev.htm"
+    },
+    "titanium": {
+      "name": "titanium (Ti-6Al-4V)",
+      "alpha_per_K": 7.71e-6,
+      "nist_fit": {"a": -1.711e2, "b": -2.140e-1, "c": 4.807e-3, "d": -7.111e-6, "e": 0},
+      "source_id": "nist_cryogenic_materials",
+      "source_url": "https://trc.nist.gov/cryogenics/materials/Ti6Al4V/Ti6Al4V_rev.htm"
+    }
+  },
+  "materials_note": {
+    "method": "alpha = slope of NIST's linear-expansion fit y = a + bT + cT^2 + dT^3 + eT^4, where y = (L - L293)/L293 x 10^5, taken at T = 293 K and multiplied by 10^-5; rounded to 3 significant figures",
+    "temperature_K": 293,
+    "fit_range_K": [4, 300],
+    "limit": "one alpha at 293 K is used for every swing; the Moon's swing (under 100 K to about 400 K) goes outside the 4-300 K fit, and alpha is smaller at cryogenic temperatures"
+  },
+  "try_it_limits": {
+    "mass_kg": {"min": 1, "max": 5000},
+    "area_m2": {"min": 0.001, "max": 5},
+    "length_m": {"min": 0.1, "max": 20},
+    "note": "team choices for realistic inputs in the Try it panel, not measured data"
+  },
+  "labels": {"strong": 0.8, "partial": 0.5},
+  "map_bands": {
+    "metric": "mean day-night swing as a percent of the Moon's swing (references.moon.thermal_swing_K)",
+    "bands": [
+      {"label": "under 1% of the Moon's swing", "min_percent": null, "max_percent": 1},
+      {"label": "1% to under 5%", "min_percent": 1, "max_percent": 5},
+      {"label": "5% or more", "min_percent": 5, "max_percent": null}
+    ],
+    "note": "team choice for the map colours, not measured data; it does not change any score"
+  },
+  "use_rules": {
+    "cold_soak_below_C": 0,
+    "thermal_cycling_min_percent_of_moon": 10,
+    "slope_climbing_percentile": 90,
+    "slope_climbing_rule": "a site supports slope-climbing tests at the Moon's median slope if its 90th percentile slope is at least that steep, i.e. at least 10% of its square is as steep as typical Malapert ground",
+    "note": "team choices used to write 'How engineers use it', not measured data; they do not change any score"
+  },
+  "mission_match": {
+    "note": "team rules for the Mission Match station: every task reuses a ranking that already exists in cards.json or the Gravity Drop formulas; no new score, tolerance or ranking",
+    "verdicts": {
+      "best_rank": 1,
+      "best": "Best stand-in on this atlas",
+      "partial_rank": 2,
+      "partial": "Partial help",
+      "otherwise": "Not useful for this",
+      "reason": "only the top two assessed sites for a task are places this atlas can point to; every other site, and every site that is not assessed, is not useful for that task"
+    },
+    "tasks": [
+      {"id": "climb", "title": "Climb steep slopes", "ranking": "moon/slope_deg",
+       "reason": "sites keep their existing rank by the gap between their median slope and Malapert's, and the 90th percentile slope shows whether at least some of their ground is as steep as typical Malapert ground"},
+      {"id": "swing", "title": "Survive big temperature swings", "ranking": "moon/thermal_swing_K",
+       "reason": "sites keep their existing rank by the gap to the Moon's day-night swing, shown as the share of the Moon's swing each site reproduces"},
+      {"id": "cold", "title": "Stay as cold as Mars", "ranking": "mars/mean_temperature_K",
+       "reason": "sites keep their existing rank by the gap between their mean temperature and the Mars mean temperature"},
+      {"id": "drop", "title": "Land from a drop", "ranking": null, "example_height_m": 2,
+       "reason": "gravity is the same at every Earth site, so no site can be ranked: an Earth drop can match the Moon's impact speed from a lower height, but never the Moon's slower fall"}
+    ]
+  }
+}

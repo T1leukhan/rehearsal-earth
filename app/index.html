@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rehearsal Earth</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js draws the bar chart. Loaded from a CDN, so no build step. -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+  <!-- Leaflet draws the site map (OpenStreetMap tiles). If it fails to load, the page still works. -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+        integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+          integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous"></script>
+  <script src="names.js" defer></script>
+  <script src="formulas.js" defer></script>
+  <script src="explain.js" defer></script>
+  <script src="rover.js" defer></script>
+  <script src="map.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- The night sky behind everything: decoration only (see style.css, "The night sky"). -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky-base"></div>
+    <div class="sky-nebula"></div>
+    <div class="stars stars-far"></div>
+    <div class="stars stars-near"></div>
+    <!-- The bright stars drift inside a still frame that keeps them out of the central text column. -->
+    <div class="bright-zone"><div class="stars stars-bright"></div></div>
+    <div class="sky-mars"></div>
+    <div class="sky-moon"></div>
+    <!-- Earth's limb from orbit: the dark night side and a thin blue-to-orange glow along its edge. -->
+    <svg class="sky-horizon" viewBox="0 0 1000 200" preserveAspectRatio="none" focusable="false">
+      <defs>
+        <linearGradient id="sky-limb" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#4aa8ff" stop-opacity="0.15"/>
+          <stop offset="0.35" stop-color="#5cb8ff" stop-opacity="0.95"/>
+          <stop offset="0.68" stop-color="#8fd0ff" stop-opacity="0.9"/>
+          <stop offset="0.86" stop-color="#ffb066" stop-opacity="0.95"/>
+          <stop offset="1" stop-color="#ff8a3d" stop-opacity="0.5"/>
+        </linearGradient>
+        <linearGradient id="sky-earth" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#040812" stop-opacity="0.55"/>
+          <stop offset="1" stop-color="#02040b" stop-opacity="0.9"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 200 L0 150 Q500 50 1000 150 L1000 200 Z" fill="url(#sky-earth)"/>
+      <!-- A wide soft glow (the atmosphere), then the bright thin line of the limb. -->
+      <path d="M0 150 Q500 50 1000 150" fill="none" stroke="url(#sky-limb)" stroke-width="22" stroke-opacity="0.18" vector-effect="non-scaling-stroke"/>
+      <path d="M0 150 Q500 50 1000 150" fill="none" stroke="url(#sky-limb)" stroke-width="7" stroke-opacity="0.4" vector-effect="non-scaling-stroke"/>
+      <path d="M0 150 Q500 50 1000 150" fill="none" stroke="url(#sky-limb)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <!-- A slim bar on every view except the start page: the title links back to the start. -->
+  <header class="topbar" id="topbar" hidden>
+    <a class="brand" href="#start" aria-label="Rehearsal Earth, back to the start page">Rehearsal Earth</a>
+    <nav class="topbar-links" aria-label="Main">
+      <a class="start-link" href="#start">Start page</a>
+      <a class="hub-link" href="#hub">Explore hub</a>
+    </nav>
+  </header>
+
+  <!-- The station bar: shown inside the six stations. app.js switches the views
+       (start page, hub, stations) from the address: #start, #hub, #thermal, #terrain, ... -->
+  <nav class="tabs" role="tablist" aria-label="Stations" id="station-bar" hidden>
+    <button role="tab" aria-selected="false" aria-controls="thermal" id="tab-thermal" data-station="thermal" tabindex="-1">Thermal</button>
+    <button role="tab" aria-selected="false" aria-controls="terrain" id="tab-terrain" data-station="terrain" tabindex="-1">Terrain</button>
+    <button role="tab" aria-selected="false" aria-controls="tryit" id="tab-tryit" data-station="tryit" tabindex="-1">Try it</button>
+    <button role="tab" aria-selected="false" aria-controls="gravity-drop" id="tab-gravity-drop" data-station="gravity-drop" tabindex="-1">Gravity Drop</button>
+    <button role="tab" aria-selected="false" aria-controls="mission" id="tab-mission" data-station="mission" tabindex="-1">Mission Match</button>
+    <button role="tab" aria-selected="false" aria-controls="validation" id="tab-validation" data-station="validation" tabindex="-1">Validation</button>
+    <button role="tab" aria-selected="false" aria-controls="sources" id="tab-sources" data-station="sources" tabindex="-1">Sources</button>
+  </nav>
+
+  <main id="main">
+    <p id="error" class="error" hidden></p>
+
+  <!-- START PAGE: shown first. The three findings are computed from the JSON files by app.js. -->
+  <section id="start" class="view" aria-labelledby="start-title">
+    <header class="hero">
+      <h1 id="start-title" tabindex="-1">Rehearsal Earth</h1>
+      <p class="subtitle">An engineering analog atlas for rehearsing the Moon and Mars on Earth</p>
+      <p class="question">Where on Earth can we rehearse the Moon and Mars, and how far can we trust it?</p>
+      <p class="intro">Before a rover or a lander flies, engineers test it somewhere on Earth that is as close as possible to where it is going. No place on Earth is a perfect match. This atlas uses NASA data to measure how close each site really is, and shows where the analogy breaks.</p>
+      <p class="tagline">Measured numbers only.</p>
+      <div class="start-actions">
+        <a class="btn btn-primary" href="#hub">Begin exploration</a>
+        <a class="skip-intro" href="#thermal">Skip intro</a>
+      </div>
+      <p class="note hint">How to explore: open the hub, pick any of the seven stations, then follow “Next station”.</p>
+    </header>
+    <h2 id="findings-title">Three headline findings</h2>
+    <ul class="findings" id="findings" aria-labelledby="findings-title"></ul>
+  </section>
+
+  <!-- EXPLORE HUB: six stations. -->
+  <section id="hub" class="view" aria-labelledby="hub-title" hidden>
+    <a class="back back-start" href="#start">← Back to start page</a>
+    <h1 id="hub-title" tabindex="-1">Explore hub</h1>
+    <p class="lead">Seven stations. Open any of them, in any order; each one ends with a link to the next.</p>
+    <ul class="hub-grid">
+        <li class="station-card" data-station="thermal">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M20 8a4 4 0 0 1 8 0v20a9 9 0 1 1-8 0z" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="35" r="4.5" fill="currentColor"/><path d="M24 31V16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M34 12h7M34 19h5M34 26h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <h2 id="hub-thermal">Thermal</h2>
+          <p>Temperature swing: how hot-to-cold each Earth site gets, against the Moon and Mars.</p>
+          <a class="btn" href="#thermal" aria-labelledby="open-thermal hub-thermal"><span id="open-thermal">Open</span></a>
+        </li>
+        <li class="station-card" data-station="terrain">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M4 40 17 18l7 10 6-8 14 20z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="m14 23 3-5 3 4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="36" cy="11" r="4" fill="currentColor"/></svg>
+          <h2 id="hub-terrain">Terrain</h2>
+          <p>Slope and roughness of the ground, against the Malapert massif on the Moon.</p>
+          <a class="btn" href="#terrain" aria-labelledby="open-terrain hub-terrain"><span id="open-terrain">Open</span></a>
+        </li>
+        <li class="station-card" data-station="tryit">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="8" y="16" width="28" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="14" cy="34" r="5" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="30" cy="34" r="5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M30 16V9h8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="9" r="2.5" fill="currentColor"/></svg>
+          <h2 id="hub-tryit">Try it</h2>
+          <p>Rover calculator: ground pressure and beam expansion for your own rover.</p>
+          <a class="btn" href="#tryit" aria-labelledby="open-tryit hub-tryit"><span id="open-tryit">Open</span></a>
+        </li>
+        <li class="station-card" data-station="gravity-drop">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="12" r="6" fill="currentColor"/><path d="M24 22v14m-6-6 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 42h32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h2 id="hub-gravity-drop">Gravity Drop</h2>
+          <p>Drop something on Earth, the Moon and Mars and compare the falls.</p>
+          <a class="btn" href="#gravity-drop" aria-labelledby="open-gravity-drop hub-gravity-drop"><span id="open-gravity-drop">Open</span></a>
+        </li>
+        <li class="station-card" data-station="mission">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="24" r="9" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="24" r="3" fill="currentColor"/><path d="M24 3v8M24 37v8M3 24h8M37 24h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h2 id="hub-mission">Mission Match</h2>
+          <p>Pick a mission task and see which Earth site, if any, can stand in for it.</p>
+          <a class="btn" href="#mission" aria-labelledby="open-mission hub-mission"><span id="open-mission">Open</span></a>
+        </li>
+        <li class="station-card" data-station="validation">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 5 39 11v11c0 10-7 17-15 21C16 39 9 32 9 22V11z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="m17 24 5 5 9-10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h2 id="hub-validation">Validation</h2>
+          <p>Does it hold up? Benchmarks, a control and a tolerance check.</p>
+          <a class="btn" href="#validation" aria-labelledby="open-validation hub-validation"><span id="open-validation">Open</span></a>
+        </li>
+        <li class="station-card" data-station="sources">
+          <svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M16 15h16M16 22h16M16 29h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h2 id="hub-sources">Sources</h2>
+          <p>Every number on the page, where it comes from and how it was measured.</p>
+          <a class="btn" href="#sources" aria-labelledby="open-sources hub-sources"><span id="open-sources">Open</span></a>
+        </li>
+    </ul>
+  </section>
+
+  <!-- Until a station that shows the map opens, the map waits here, laid out but off screen
+       and hidden from everyone, so Leaflet can measure it and fit the markers. -->
+  <div id="map-park" aria-hidden="true" inert>
+    <!-- One map for the Thermal and Terrain stations: app.js moves this box to the open station. -->
+    <div id="map-box">
+      <div id="map" role="region" aria-label="Map of the Earth sites"></div>
+      <p class="note" id="map-message" hidden></p>
+      <div id="map-legend" class="legend"></div>
+    </div>
+  </div>
+
+  <div id="thermal" class="view station" data-station="thermal" role="tabpanel" aria-labelledby="thermal-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="thermal-title" tabindex="-1">Thermal: temperature swing</h1>
+      <p class="lead">What you will see here: how far each Earth site's surface temperature swings between day and night, compared with the Moon, and how warm each site is compared with Mars. Pick a site for its card.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="thermal-figure"></p>
+      <p class="lead-sentence" id="thermal-sentence"></p>
+    </div>
+
+    <section>
+      <h2>References</h2>
+      <p class="note key" id="thermal-key"></p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-thermal-refs"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · the Moon and Mars reference values and their sources</span></button>
+      <div class="reveal" id="reveal-thermal-refs">
+        <div id="refs" class="refs"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Day–night swing: Earth sites vs the Moon</h2>
+      <div class="chart-box"><canvas id="chart" aria-label="Bar chart of day-night temperature swing" role="img"></canvas></div>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-chart-note"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · how these were measured</span></button>
+      <div class="reveal" id="reveal-chart-note"><p class="note" id="chart-note"></p></div>
+    </section>
+
+    <section>
+      <h2>Mean temperature: Earth sites vs Mars</h2>
+      <div class="chart-box"><canvas id="chart2" aria-label="Bar chart of mean temperature with a line for Mars" role="img"></canvas></div>
+      <p class="note key">The swing is the difference of two 8-day averages, so the true daily swing is larger.</p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-chart2-note"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · how these were measured</span></button>
+      <div class="reveal" id="reveal-chart2-note"><p class="note" id="chart2-note"></p></div>
+    </section>
+
+    <section>
+      <h2>Pick a site</h2>
+      <div class="map-slot" data-tab="thermal"></div>
+      <div id="sites" class="sites"></div>
+      <div id="card" aria-live="polite"></div>
+    </section>
+
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="thermal"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#terrain">Next station: Terrain →</a>
+    </nav>
+  </div>
+
+  <div id="terrain" class="view station" data-station="terrain" role="tabpanel" aria-labelledby="terrain-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="terrain-title" tabindex="-1">Terrain: slope and roughness</h1>
+      <p class="lead">What you will see here: how steep and how bumpy each Earth site's ground is, measured from 30 m elevation maps, compared with the Malapert massif near the Moon's south pole. Pick a site for its card.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="terrain-figure"></p>
+      <p class="lead-sentence" id="terrain-sentence"></p>
+    </div>
+    <section>
+      <h2>Moon reference: Malapert massif</h2>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-terrain-refs"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · Malapert's slope, roughness, data quality and sources</span></button>
+      <div class="reveal" id="reveal-terrain-refs">
+        <div id="terrain-refs" class="refs"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Median slope: Earth sites vs the Moon</h2>
+      <div class="chart-box"><canvas id="chart-slope" aria-label="Bar chart of median slope with a marker for the 90th percentile slope" role="img"></canvas></div>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-slope-note"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · how these were measured</span></button>
+      <div class="reveal" id="reveal-slope-note"><p class="note" id="slope-note"></p></div>
+    </section>
+
+    <section>
+      <h2>Median roughness: Earth sites vs the Moon</h2>
+      <div class="chart-box"><canvas id="chart-rough" aria-label="Bar chart of median roughness" role="img"></canvas></div>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-rough-note"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · how these were measured</span></button>
+      <div class="reveal" id="reveal-rough-note"><p class="note" id="rough-note"></p></div>
+    </section>
+
+    <section>
+      <h2>Pick a site</h2>
+      <div class="map-slot" data-tab="terrain"></div>
+      <div id="terrain-sites" class="sites"></div>
+      <div id="terrain-card" aria-live="polite"></div>
+    </section>
+
+    <section>
+      <h2>About these numbers</h2>
+      <p class="note key" id="terrain-key"></p>
+      <details class="more">
+        <summary><span class="more-title">All terrain notes</span><span class="more-action">Show details</span></summary>
+        <ul id="terrain-notes" class="notes"></ul>
+      </details>
+    </section>
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="terrain"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#tryit">Next station: Try it →</a>
+    </nav>
+  </div>
+
+  <div id="tryit" class="view station" data-station="tryit" role="tabpanel" aria-labelledby="tryit-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="tryit-title" tabindex="-1">Try it: Rover calculator</h1>
+      <p class="lead">What you will see here: how hard your rover presses on the ground on Earth, the Moon and Mars, and how much a beam grows and shrinks with each place's temperature swing.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="tryit-figure"></p>
+      <p class="lead-sentence" id="tryit-sentence"></p>
+    </div>
+    <section>
+      <h2>Pick a site to compare with</h2>
+      <div id="tryit-sites" class="sites"></div>
+    </section>
+    <section>
+      <h2>Your rover and beam</h2>
+      <p class="note">Type your own rover and beam. Starting example: a 200 kg rover on 0.06 m² of wheel contact with a 2 m aluminum beam. Results update as you type.</p>
+      <form class="try-form" onsubmit="return false">
+        <label>Rover mass (kg)
+          <input id="in-mass" type="number" min="0" step="any" inputmode="decimal" value="200">
+          <span class="warn" id="msg-mass" aria-live="polite"></span></label>
+        <label>Wheel contact area, all wheels together (m²)
+          <input id="in-area" type="number" min="0" step="any" inputmode="decimal" value="0.06">
+          <span class="warn" id="msg-area" aria-live="polite"></span></label>
+        <label>Beam material
+          <select id="in-material"></select>
+          <span class="warn"></span></label>
+        <label>Beam length (m)
+          <input id="in-length" type="number" min="0" step="any" inputmode="decimal" value="2">
+          <span class="warn" id="msg-length" aria-live="polite"></span></label>
+      </form>
+      <div class="try-results">
+        <div class="ref reveal-panel" id="panel-pressure">
+          <h3>Ground pressure</h3>
+          <p class="formula">p = m · g / A</p>
+          <ul id="out-pressure" class="results"></ul>
+          <p class="sentence" id="pressure-sentence"></p>
+          <p class="note reveal-only" id="pressure-note"></p>
+          <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="panel-pressure"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · formula and working</span></button>
+        </div>
+        <div class="ref reveal-panel" id="panel-expansion">
+          <h3>Thermal expansion of the beam</h3>
+          <p class="formula">ΔL = α · L · ΔT</p>
+          <ul id="out-expansion" class="results"></ul>
+          <p class="sentence" id="expansion-sentence"></p>
+          <details class="more reveal-only">
+            <summary><span class="more-title">About this calculation</span><span class="more-action">Show details</span></summary>
+            <p class="note" id="expansion-note"></p>
+          </details>
+          <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="panel-expansion"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · formula and working</span></button>
+        </div>
+      </div>
+      <!-- The rover illustration: drawn by app.js from the inputs above, with the sizes from rover.js. -->
+      <div class="ref rover-panel" id="panel-rover">
+        <h3 id="rover-label">Generic six-wheel rover (illustration)</h3>
+        <div class="rover-layout">
+          <div class="rover-view">
+            <div class="rover-stage" id="rover-stage" tabindex="0" role="img" aria-labelledby="rover-label" aria-describedby="rover-desc" data-state="ready">
+              <div class="rover-fit"><div class="rover-turn" id="rover-turn"><div class="rover-sway"><div class="rover-3d" id="rover-3d"></div></div></div></div>
+            </div>
+            <div class="rover-controls">
+              <p class="note">Drag the model, or select it and use the arrow keys, to turn it.</p>
+              <button type="button" class="reset-view" id="rover-reset">Reset view</button>
+            </div>
+          </div>
+          <div class="rover-worlds">
+            <ul class="rover-scenes" id="rover-scenes" aria-label="Wheels in the ground on Earth, the Moon and Mars"></ul>
+            <p class="note" id="rover-note">Illustration only. Wheel size follows contact area (six equal wheels assumed), body size follows mass and sinking depth is drawn in proportion to ground pressure. It is not a soil simulation.</p>
+          </div>
+        </div>
+        <p class="sr-only" id="rover-desc"></p>
+      </div>
+    </section>
+
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="tryit"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#gravity-drop">Next station: Gravity Drop →</a>
+    </nav>
+  </div>
+
+  <div id="gravity-drop" class="view station" data-station="gravity-drop" role="tabpanel" aria-labelledby="gravity-drop-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="gravity-drop-title" tabindex="-1">Gravity Drop</h1>
+      <p class="lead">What you will see here: how long a fall takes and how fast it lands on Earth, the Moon and Mars, from the same height.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="gravity-drop-figure"></p>
+      <p class="lead-sentence" id="gravity-drop-sentence"></p>
+    </div>
+    <section class="reveal-panel" id="panel-drop">
+      <h2>Drop height</h2>
+      <p class="note">Drop something from the same height on Earth, the Moon and Mars. Results update as you type; press Drop to watch the three falls.</p>
+      <form class="try-form drop-form" id="drop-form" onsubmit="return false">
+        <label>Drop height (m)
+          <input id="in-drop" type="number" min="0.1" max="20" step="any" inputmode="decimal" value="2">
+          <span class="warn" id="msg-drop" aria-live="polite"></span></label>
+        <button type="submit" id="drop-button" class="drop-button">Drop</button>
+      </form>
+      <p class="formula">t = √(2h / g) · v = √(2gh)</p>
+      <div class="drop-cols" id="drop-cols"></div>
+      <p class="note" id="drop-status" aria-live="polite"></p>
+      <p class="sentence" id="drop-sentence"></p>
+      <p class="note key" id="drop-caveat"></p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="panel-drop"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · formulas and working</span></button>
+    </section>
+
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="gravity-drop"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#mission">Next station: Mission Match →</a>
+    </nav>
+  </div>
+
+  <div id="mission" class="view station" data-station="mission" role="tabpanel" aria-labelledby="mission-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="mission-title" tabindex="-1">Mission Match</h1>
+      <p class="lead">What you will see here: pick one thing a mission must rehearse, and see which Earth site in this atlas comes closest, which helps a little, and which do not help, with the honest score beside every verdict.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="mission-figure"></p>
+      <p class="lead-sentence" id="mission-sentence"></p>
+    </div>
+    <section>
+      <h2 id="mission-question">What do you want to rehearse?</h2>
+      <!-- One button per task (from config.json mission_match); app.js fills them in. -->
+      <div class="task-picker" id="task-picker" role="group" aria-labelledby="mission-question"></div>
+      <p class="note key" id="task-rule"></p>
+      <ol class="verdicts" id="verdicts" aria-live="polite"></ol>
+    </section>
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="mission"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#validation">Next station: Validation →</a>
+    </nav>
+  </div>
+
+  <div id="validation" class="view station" data-station="validation" role="tabpanel" aria-labelledby="validation-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="validation-title" tabindex="-1">Validation: does it hold up?</h1>
+      <p class="lead">What you will see here: whether the scores agree with sites NASA already uses as analogs, a control site, and what happens when every tolerance changes by 20%.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="validation-figure"></p>
+      <p class="lead-sentence" id="validation-sentence"></p>
+    </div>
+    <p class="note key" id="val-rules"></p>
+    <section>
+      <h2>1. Benchmarks: sites NASA already names as analogs</h2>
+      <p class="plain" id="val-bench-summary"></p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-val-bench"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · ranks, scores and findings for each site</span></button>
+      <div class="reveal" id="reveal-val-bench">
+        <div class="table-wrap"><table id="val-bench"></table></div>
+        <ul id="val-findings" class="notes"></ul>
+      </div>
+    </section>
+    <section>
+      <h2>2. Negative control and single-metric matches</h2>
+      <p id="val-control" class="sentence"></p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-val-single"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · single-metric matches and ties</span></button>
+      <div class="reveal" id="reveal-val-single"><ul id="val-single" class="notes"></ul></div>
+    </section>
+    <section>
+      <h2>3. Sensitivity: every tolerance −20% and +20%</h2>
+      <p class="plain" id="val-sens-summary"></p>
+      <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="reveal-val-sens"><span class="reveal-action">Show the numbers</span><span class="reveal-what"> · label and ranking changes for each tolerance change</span></button>
+      <div class="reveal" id="reveal-val-sens">
+      <p id="val-labels" class="note"></p>
+      <div class="table-wrap"><table id="val-sens"></table></div>
+      <ul id="val-changes" class="notes"></ul>
+      <p class="note">Gap rank: the atlas's ranking (smallest gap first). It does not use the tolerance, so it cannot change. Score rank: ranking by score, where scores stop at 0, so sites far from the reference tie at 0.</p>
+      </div>
+    </section>
+    <section>
+      <h2>What we would change (not changed)</h2>
+      <ul id="val-would" class="notes"></ul>
+    </section>
+    <p class="tab-sources-line"><a class="tab-sources" href="#sources" data-filter="validation"></a></p>
+    <nav class="journey" aria-label="Journey">
+      <a class="back" href="#hub">← Back to hub</a>
+      <a class="next" href="#sources">Next station: Sources →</a>
+    </nav>
+  </div>
+
+  <div id="sources" class="view station" data-station="sources" role="tabpanel" aria-labelledby="sources-title" hidden>
+    <header class="station-head">
+      <a class="back" href="#hub">← Back to hub</a>
+      <h1 id="sources-title" tabindex="-1">Sources: every number</h1>
+      <p class="lead">What you will see here: every number on the page with its value, the area and resolution it was measured at, its dataset and a link to the source. Filter by station.</p>
+    </header>
+    <div class="station-lead" aria-live="polite">
+      <p class="big-figure" id="sources-figure"></p>
+      <p class="lead-sentence" id="sources-sentence"></p>
+    </div>
+    <section>
+      <h2 id="sources-heading" tabindex="-1">Every number and where it comes from</h2>
+      <!-- The filter only shows or hides rows; every row stays in the table. -->
+      <div id="source-filter" class="filter" role="group" aria-label="Show the sources for">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="thermal" aria-pressed="false">Thermal</button>
+        <button type="button" data-filter="terrain" aria-pressed="false">Terrain</button>
+        <button type="button" data-filter="tryit" aria-pressed="false">Try it</button>
+        <button type="button" data-filter="gravity-drop" aria-pressed="false">Gravity Drop</button>
+        <button type="button" data-filter="mission" aria-pressed="false">Mission Match</button>
+        <button type="button" data-filter="validation" aria-pressed="false">Validation</button>
+        <button type="button" data-filter="references" aria-pressed="false">References</button>
+      </div>
+      <p class="note" id="filter-count" aria-live="polite"></p>
+      <div class="table-wrap"><table id="numbers"></table></div>
+    </section>
+    <nav class="journey" aria-label="Journey">
+      <a class="next" href="#hub">Journey complete: back to the hub →</a>
+    </nav>
+  </div>
+  </main>
+
+  <footer>
+    <p class="footer-name"><strong>Rehearsal Earth</strong>: an engineering analog atlas for rehearsing the Moon and Mars on Earth</p>
+    <p class="disclaimer">Made for NASA Space Apps Challenge 2026 - not affiliated with or endorsed by NASA</p>
+    <p>Data: NASA SRTM, MODIS MOD11A2 (via AppEEARS), LRO LOLA and Diviner, NASA fact sheets, NIST cryogenic material properties. Missing values are shown as “not assessed”, never guessed.</p>
+  </footer>
+</body>
+</html>

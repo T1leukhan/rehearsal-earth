@@ -1,0 +1,212 @@
+{
+  "srtmgl1_v3": {
+    "dataset": "NASA Shuttle Radar Topography Mission Global 1 arc second V003",
+    "short_name": "SRTMGL1",
+    "version": "003",
+    "doi": "10.5067/MEASURES/SRTM/SRTMGL1.003",
+    "doi_url": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "file_urls": [
+      "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S24W070.SRTMGL1.hgt/S24W070.SRTMGL1.hgt.zip",
+      "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/S21W069.SRTMGL1.hgt/S21W069.SRTMGL1.hgt.zip",
+      "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL1.003/N19W156.SRTMGL1.hgt/N19W156.SRTMGL1.hgt.zip"
+    ],
+    "file_sites": {
+      "S24W070.SRTMGL1.hgt.zip": "atacama",
+      "S21W069.SRTMGL1.hgt.zip": "altiplano",
+      "N19W156.SRTMGL1.hgt.zip": "maunakea"
+    },
+    "file_bytes": {
+      "S24W070.SRTMGL1.hgt.zip": 12004846,
+      "S21W069.SRTMGL1.hgt.zip": 12858773,
+      "N19W156.SRTMGL1.hgt.zip": 11042159
+    },
+    "file_check": "local sizes match the CMR granule sizes (11.4487, 12.2631, 10.5306 MiB), checked 2026-11-14",
+    "citation": "NASA JPL (2013). NASA Shuttle Radar Topography Mission Global 1 arc second [Data set]. NASA Land Processes Distributed Active Archive Center, Sioux Falls, South Dakota, USA. https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003. Accessed 2026-11-08.",
+    "citation_source": "NASA CMR collection metadata (CollectionCitations), retrieved 2026-11-08",
+    "resolution": "1 arc-second (about 30 m)",
+    "coverage_lat_deg": {"north": 60, "south": -56},
+    "coverage_source": "https://cmr.earthdata.nasa.gov/search/concepts/C2763266360-LPCLOUD.html",
+    "coverage_check": "CMR collection record: bounding rectangle 60 N to 56 S; abstract says 'all land between 60° N and 56° S latitude' (read 2026-11-14)",
+    "used_by": ["terrain.json"]
+  },
+  "mod11a2_v061": {
+    "dataset": "MODIS/Terra Land Surface Temperature/Emissivity 8-Day L3 Global 1km SIN Grid V061",
+    "short_name": "MOD11A2",
+    "version": "061",
+    "doi": "10.5067/MODIS/MOD11A2.061",
+    "doi_url": "https://doi.org/10.5067/MODIS/MOD11A2.061",
+    "access": "NASA AppEEARS point sample, https://appeears.earthdatacloud.nasa.gov/",
+    "appeears_request_id": null,
+    "file": "atlas-thermal-MOD11A2-061-results.csv",
+    "documentation": [
+      "https://appeears.earthdatacloud.nasa.gov/api/product/MOD11A2.061",
+      "https://lpdaac.usgs.gov/documents/715/MOD11_User_Guide_V61.pdf"
+    ],
+    "citation": "Wan, Z., Hook, S., Hulley, G. (2021). MODIS/Terra Land Surface Temperature/Emissivity 8-Day L3 Global 1km SIN Grid V061 [Data set]. NASA Land Processes Distributed Active Archive Center, Sioux Falls, South Dakota, USA. https://doi.org/10.5067/MODIS/MOD11A2.061. Accessed 2026-11-08.",
+    "citation_source": "NASA CMR collection metadata (CollectionCitations), retrieved 2026-11-08",
+    "resolution": "nominal 1 km pixel, 8-day composite",
+    "not_recorded": ["appeears_request_id"],
+    "used_by": ["thermal.json"]
+  },
+  "msfc_lunar_environment_2008": {
+    "dataset": "Environment Challenges for Exploration of the Moon (conference slides)",
+    "authors": "Minow, J. I., et al.",
+    "organization": "NASA Marshall Space Flight Center",
+    "date": "2008-01-23",
+    "url": "https://ntrs.nasa.gov/api/citations/20080013552/downloads/20080013552.pdf",
+    "record_url": "https://ntrs.nasa.gov/citations/20080013552",
+    "citation": "Minow, J. I., et al. (2008). Environment Challenges for Exploration of the Moon. NASA Marshall Space Flight Center. NTRS 20080013552. https://ntrs.nasa.gov/citations/20080013552. Accessed 2026-11-08.",
+    "check": "title, authors and date confirmed from the NTRS record on 2026-11-08; the PDF (over 10 MB) was not read, so the 400 K / under 100 K values are as provided by the team",
+    "used_by": ["config.json"]
+  },
+  "spaceref_mars_temperature": {
+    "dataset": "SpaceRef article on Mars temperature",
+    "url": "https://spaceref.com/?p=24443",
+    "check": "page returned HTTP 403 on 2026-11-08 and could not be read; value as provided by the team, see nssdc_mars_factsheet for a NASA value",
+    "used_by": ["config.json"]
+  },
+  "nssdc_mars_factsheet": {
+    "dataset": "NASA NSSDC Mars Fact Sheet",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+    "values_seen": "average temperature ~214 K (-59 C); surface gravity mean 3.73, equatorial 3.69 m/s2 (checked 2026-11-08)",
+    "used_by": ["config.json"]
+  },
+  "nssdc_moon_factsheet": {
+    "dataset": "NASA NSSDC Moon Fact Sheet",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+    "values_seen": "surface gravity 1.62 m/s2 (checked 2026-11-08)",
+    "used_by": ["config.json"]
+  },
+  "nssdc_earth_factsheet": {
+    "dataset": "NASA NSSDC Earth Fact Sheet",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html",
+    "values_seen": "standard gravity 9.80665 m/s2 (CODATA 2018, exact); surface gravity mean 9.820 m/s2 (checked 2026-11-08)",
+    "used_by": ["config.json"]
+  },
+  "nist_cryogenic_materials": {
+    "dataset": "NIST Cryogenic Material Properties database (linear expansion fits)",
+    "organization": "National Institute of Standards and Technology (NIST), Cryogenics Technologies Group",
+    "url": "https://trc.nist.gov/cryogenics/materials/materialproperties.htm",
+    "pages": [
+      "https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm",
+      "https://trc.nist.gov/cryogenics/materials/304Stainless/304Stainless_rev.htm",
+      "https://trc.nist.gov/cryogenics/materials/Ti6Al4V/Ti6Al4V_rev.htm"
+    ],
+    "check": "linear-expansion fit coefficients a-e copied from the raw page text on 2026-11-09; alpha at 293 K is computed from them (see materials_note in config.json)",
+    "used_by": ["config.json"]
+  },
+  "lro_diviner_gdr_l3": {
+    "dataset": "LRO Diviner Level 3 Gridded Data Product (GDR), bolometric temperature maps",
+    "bundle": "Lunar Reconnaissance Orbiter Diviner Derived Data Bundle 1 (urn:nasa:pds:lro_diviner_derived1)",
+    "organization": "NASA Planetary Data System, Geosciences Node",
+    "doi": "10.17189/wj0s-w188",
+    "doi_url": "https://doi.org/10.17189/wj0s-w188",
+    "folder_url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/",
+    "file_urls": [
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100121d_004_img.img",
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100121d_004_img.lbl",
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100121d_004_img.xml",
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100107n_004_img.img",
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100107n_004_img.lbl",
+      "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gdr_l3/2010/cylindrical/img/dgdr_tbol_avg_cyl_20100107n_004_img.xml"
+    ],
+    "file_bytes": {
+      "dgdr_tbol_avg_cyl_20100121d_004_img.img": 2073600,
+      "dgdr_tbol_avg_cyl_20100107n_004_img.img": 2073600
+    },
+    "periods_utc": {
+      "day": ["2010-01-21T01:00:00", "2010-02-17T09:00:00"],
+      "night": ["2010-01-07T10:00:00", "2010-02-03T18:00:00"]
+    },
+    "citation": "Paige, D., Sullivan, M., Williams, J-P. (2022). Lunar Reconnaissance Orbiter Diviner Derived Data Bundle 1. NASA Planetary Data System. https://doi.org/10.17189/wj0s-w188. Accessed 2026-11-13.",
+    "citation_source": "bundle.xml Citation_Information; DOI checked with DataCite and doi.org on 2026-11-14",
+    "reference_papers": [
+      {"doi": "10.1016/j.icarus.2016.08.012", "title": "The global surface temperatures of the Moon as measured by the Diviner Lunar Radiometer Experiment", "first_author": "Williams", "year": 2017},
+      {"doi": "10.1029/2011JE003866", "title": "Lunar surface rock abundance and regolith fines temperatures derived from LRO Diviner Radiometer data", "first_author": "Bandfield", "year": 2011}
+    ],
+    "reference_papers_check": "DOIs listed in the collection label; titles checked with Crossref on 2026-11-14",
+    "resolution": "4 pixels per degree, 7580.8 m per pixel at the equator",
+    "notes": "notes/moon_data.md",
+    "used_by": ["moon_thermal.json", "config.json"]
+  },
+  "lola_5mpp_site23": {
+    "dataset": "LOLA 5 m/pixel maps for candidate south pole landing sites: Site23 (Malapert massif)",
+    "organization": "NASA Goddard Space Flight Center, Planetary Geodesy Data Archive (PGDA)",
+    "doi": null,
+    "doi_url": null,
+    "doi_note": "no dataset DOI found; the README asks users to cite Barker et al. 2021 (reference_paper)",
+    "folder_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/",
+    "readme_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/README",
+    "file_urls": [
+      "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_slp.tif",
+      "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif"
+    ],
+    "file_bytes": {
+      "Site23_final_adj_5mpp_slp.tif": 70586810,
+      "Site23_final_adj_5mpp_surf.tif": 70586804
+    },
+    "files_last_modified": {
+      "Site23_final_adj_5mpp_slp.tif": "2020-06-08",
+      "Site23_final_adj_5mpp_surf.tif": "2020-06-12"
+    },
+    "units": "slope in degrees, surface height in meters (from the README)",
+    "reference_paper": {"doi": "10.1016/j.pss.2020.105119", "title": "Improved LOLA elevation maps for south pole landing sites: Error estimates and their impact on illumination conditions", "first_author": "Barker", "year": 2021},
+    "reference_paper_check": "DOI from the README; title checked with Crossref on 2026-11-14",
+    "resolution": "5 m per pixel, 4200 x 4200 pixels (21 km x 21 km), south polar stereographic (sphere R = 1737.4 km, true scale at the pole)",
+    "used_as": "surf.tif heights averaged to 30 m (6 x 6 block means) for slope and roughness; slp.tif median for comparison",
+    "product_page_url": "https://pgda.gsfc.nasa.gov/products/78",
+    "product_page_title": "PGDA - High-Resolution LOLA Topography for Lunar South Pole Sites",
+    "values_seen": {
+      "slope_uncertainty": "'a median RMS slope error ~ 1.5 - 2.5°' (within the RoIs, similar across all the sites)",
+      "interpolated_pixels": "'the fraction of interpolated 5-m pixels in these polar LDEMs is necessarily large (~90%)'",
+      "checked": "page text read on 2026-11-14"
+    },
+    "notes": "notes/moon_data.md",
+    "used_by": ["moon_terrain.json", "config.json"]
+  },
+  "nasa_planetary_analogs": {
+    "dataset": "10 Things to Know About Planetary Analogs (NASA Science web page)",
+    "organization": "NASA",
+    "url": "https://science.nasa.gov/solar-system/planetary-analogs/10-things-to-know-about-planetary-analogs/",
+    "quotes": {
+      "haughton": "The Haughton Mars Project (HMP) is a mission analog located at the Haughton meteorite impact crater on the world's largest uninhabited island, Devon Island, Canada. ... Mars is covered in craters, so Haughton Crater is a good place to practice Martian extravehicular activities (EVAs).",
+      "atacama": "studying extremely dry places like Chile's Atacama Desert helps scientists understand the conditions on Mars."
+    },
+    "check": "page text read on 2026-11-14",
+    "used_by": ["validation.json"]
+  },
+  "nasa_arads": {
+    "dataset": "Atacama Rover Astrobiology Drilling Studies (ARADS) (NASA web page)",
+    "organization": "NASA",
+    "url": "https://www.nasa.gov/universe/atacama-rover-astrobiology-drilling-studies-arads/",
+    "quotes": {
+      "atacama": "testing them in one of the most Mars-like places on Earth: Chile's Atacama Desert."
+    },
+    "check": "page text read on 2026-11-14",
+    "used_by": ["validation.json"]
+  },
+  "ntrs_20100003844": {
+    "dataset": "McMurdo Dry Valleys, Antarctica - A Mars Phoenix Mission Analog",
+    "authors": "Tamppari, L. K., Anderson, R. M., Archer, D., et al.",
+    "organization": "NASA Technical Reports Server",
+    "date": "2010",
+    "url": "https://ntrs.nasa.gov/citations/20100003844",
+    "quotes": {
+      "dryvalleys": "The best known Earth analog to the Martian high-northern plains, where Phoenix landed, are the McMurdo Dry Valleys (MDV), Antarctica"
+    },
+    "check": "title, authors and abstract read from the NTRS API on 2026-11-14",
+    "used_by": ["validation.json"]
+  },
+  "ntrs_20110008363": {
+    "dataset": "Mauna Kea, Hawaii as an Analogue Site for Future Planetary Resource Exploration: Results from the 2010 ILSO-ISRU Field-Testing Campaign",
+    "authors": "ten Kate, I. L., Armstrong, R., Bernhardt, B., et al.",
+    "organization": "NASA Technical Reports Server",
+    "date": "2010",
+    "url": "https://ntrs.nasa.gov/citations/20110008363",
+    "quotes": {
+      "maunakea": "we provide a description and regional geological setting for a new field analogue test site for lunar resource exploration"
+    },
+    "check": "title, authors and abstract read from the NTRS API on 2026-11-14",
+    "used_by": ["validation.json"]
+  }
+}
